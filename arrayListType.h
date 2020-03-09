@@ -51,17 +51,22 @@ class arrayListType
 
 template <class elemType> void arrayListType<elemType>::insertAt(int location, const elemType& insertItem)
 {
-  if(length < 5 && location < 5)
+  if(location < 5 && location >= 0)//test array length and location of variable
   {
-    elemType temp = list[location];//original value pushed into temp holder
-    list[location] = insertItem;//new value pushed into spot
-    for(int i = location + 1; i < length + 1; i++)
+    if(length < 5)
     {
-      elemType temp2 = list[i];
-      list[i] = temp;
-      temp = temp2;
+      elemType temp = list[location];//original value pushed into temp holder
+      list[location] = insertItem;//new value pushed into spot
+      for(int i = location + 1; i < length + 1; i++)//loop through array starting at new value location
+      {
+        elemType newTemp = list[i];//insert in a new temp
+        list[i] = temp;//move old temp to list
+        temp = newTemp;//replace old temp to new temp
+      }
+      length++;//increase length of array
     }
-  length++;
+    else
+      cout << "Array is Full" << endl;
   }
   else
     cout << "Position is out of range. The list does not change." << endl;
@@ -69,15 +74,17 @@ template <class elemType> void arrayListType<elemType>::insertAt(int location, c
 
 // removeAt function definition
 template <class elemType> void arrayListType<elemType>::removeAt(int location){
-  if(location < 5)
+  if(location < length && location >= 0)//test location
   {
-  for(int i = location; i < length; i++)
+  for(int i = location; i < length; i++)//move through the array moving all items
   {
-    elemType temp = list[i];
-    list[i] = list[i + 1];
-    list[i+ 1] = temp;
+    elemType temp = list[i];//insert into temp
+    list[i] = list[i + 1];//move next element into current element
+    list[i+ 1] = temp;//insert into next array element
   }
-  length--;
+  length--;//decrease array size
+  cout << "After removing the element at position " << location << ", the list is: ";
+  print();
   }
   else
     cout << "The location of the item to be removed is out of range. The list does not change.";
@@ -86,15 +93,19 @@ template <class elemType> void arrayListType<elemType>::removeAt(int location){
 
 // find minimum value of the list
 template <class elemType>elemType arrayListType<elemType>::min() const{
- elemType min = list[0];
- for(int i = 1; i < length; i++)
+  if(length > 0)
+  {
+ elemType min = list[0];//set current to min
+ for(int i = 1; i < length; i++)//loop through array starting at second location
  {
-   if(min > list[i])
+   if(min > list[i])//if min is smaller than current, assign new min
    {
      min = list[i];
    }
  }
  return min;
+}
+ return 0;//return min
 } 
 // end min function 
 
